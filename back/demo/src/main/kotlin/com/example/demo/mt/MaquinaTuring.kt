@@ -12,21 +12,28 @@ class MaquinaTuring(
     val transitions: Transitions,
 ) {
 
-    private var tape : Tape? = null
+    private var tape: Tape? = null
     private var actualState = initialState
 
-    fun startMT(word: String){
-        tape = Tape(word,whiteSymbol, tapeAlphabet,initialState)
+    fun startMT(word: String): Steps {
+        tape = Tape(word, whiteSymbol, tapeAlphabet, initialState)
+        return return Steps(
+            tape?.tape ?: arrayListOf(),
+            tape?.actualPosition ?: 0,
+            actualState,
+            null,
+            null
+        )
     }
 
-    fun nextStep() : Steps{
+    fun nextStep(): Steps {
         val transition = transitions.rule["$actualState,${tape?.getActualSymbol()}"]
-        val isAccepted : Boolean?
-        if(transition != null){
+        val isAccepted: Boolean?
+        if (transition != null) {
             tape?.walkOnTape(transition.direction, transition.symbol)
             actualState = transition.state
             isAccepted = null
-        }else{
+        } else {
             isAccepted = acceptedState.contains(actualState)
         }
         return Steps(
@@ -34,16 +41,16 @@ class MaquinaTuring(
             tape?.actualPosition ?: 0,
             actualState,
             isAccepted,
-            "//todo criar a string de transition"
+            "($actualState,${tape?.getActualSymbol()}) -> (${transition?.state},${transition?.symbol}, ${transition?.direction})"
         )
     }
 
 }
 
 data class Steps(
-    val tapeValue : ArrayList<Char>,
-    val tapePosition : Int,
+    val tapeValue: ArrayList<Char>,
+    val tapePosition: Int,
     val actualState: String,
-    val isAccepted : Boolean?,
-    val transition : String?
+    val isAccepted: Boolean?,
+    val transition: String?
 )

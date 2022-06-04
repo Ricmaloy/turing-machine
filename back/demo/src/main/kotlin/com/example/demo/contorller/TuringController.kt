@@ -30,9 +30,8 @@ class TuringController {
     fun startMT(
         @RequestParam("filename") fileName: String,
         @RequestParam("word") word: String
-    ): Steps {
-        MTRunning.startMT(fileName)
-        return fileName
+    ): Steps? {
+        return MTRunning.startMT(fileName, word)
     }
 
     @GetMapping("/clearMT")
