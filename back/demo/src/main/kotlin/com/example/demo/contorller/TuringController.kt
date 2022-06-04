@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*
 import java.io.File
 import javax.xml.crypto.Data
 
-
+@CrossOrigin
 @RestController
 class TuringController {
 
