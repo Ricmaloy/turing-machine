@@ -1,39 +1,36 @@
+package com.example.demo.mt
+
 class Tape(
     word: String,
     whiteSymbol: Char,
+    val alphabet: List<Char>,
     val acceptedSymbols: List<Char>,
     var actualState: String = ""
-
 ) {
 
     private var size: Int = 0
     var tape: ArrayList<Char> = arrayListOf()
     var actualPosition = 0
-
+    var wrongWord = false
     init {
-        size = word.length + 1
+        size = word.length + 2
+        tape.add(whiteSymbol)
         word.forEach {
-            tape.add(it)
+            if(alphabet.contains(it)){
+                tape.add(it)
+            }
+            else{
+                wrongWord = true
+            }
         }
         tape.add(whiteSymbol)
     }
 
-    fun printTape(): String {
-        var aux = ""
-        tape.forEachIndexed { index, c ->
-            if (index == actualPosition) {
-                aux += actualState
-            }
-            aux += c
-        }
-        return aux
-    }
-
     fun walkOnTape(direction: Char, symbolToWrite: Char) {
-        if (direction == 'R' || direction == 'r' || direction == 'D' || direction == 'd') {
+        if (direction == 'R') {
             walkToRight(symbolToWrite)
         }
-        if (direction == 'L' || direction == 'l' || direction == 'E' || direction == 'e') {
+        if (direction == 'L') {
             walkToLeft(symbolToWrite)
         }
     }
@@ -52,7 +49,6 @@ class Tape(
             tape[actualPosition] = symbolToWrite
             if (canWalkToLeft()) {
                 actualPosition--
-                //todo esquerad n infinita
             }
         }
     }

@@ -1,7 +1,5 @@
 package com.example.demo.mt
 
-import Tape
-
 class MaquinaTuring(
     val states: List<String>,
     val alphabet: List<Char>,
@@ -16,23 +14,33 @@ class MaquinaTuring(
     private var actualState = initialState
 
     fun startMT(word: String): Steps {
-        tape = Tape(word, whiteSymbol, tapeAlphabet, initialState)
-        return return Steps(
+        tape = Tape(word, whiteSymbol, alphabet, tapeAlphabet, initialState)
+        var isAccepted : Boolean ? = null
+        if(tape?.wrongWord == true){
+            isAccepted = false
+        }
+        return Steps(
             tape?.tape ?: arrayListOf(),
             tape?.actualPosition ?: 0,
             actualState,
-            null,
+            isAccepted,
             null
         )
     }
 
     fun nextStep(): Steps {
         val transition = transitions.rule["$actualState,${tape?.getActualSymbol()}"]
+        val transitionString =
+            "($actualState,${tape?.getActualSymbol()}) -> (${transition?.state},${transition?.symbol}, ${transition?.direction})"
         val isAccepted: Boolean?
         if (transition != null) {
             tape?.walkOnTape(transition.direction, transition.symbol)
             actualState = transition.state
-            isAccepted = null
+            isAccepted = if (states.contains(actualState)) {
+                null
+            } else {
+                false
+            }
         } else {
             isAccepted = acceptedState.contains(actualState)
         }
@@ -41,8 +49,8 @@ class MaquinaTuring(
             tape?.actualPosition ?: 0,
             actualState,
             isAccepted,
-            "($actualState,${tape?.getActualSymbol()}) -> (${transition?.state},${transition?.symbol}, ${transition?.direction})"
-        )
+            transitionString
+            )
     }
 
 }

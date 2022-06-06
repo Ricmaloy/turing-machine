@@ -3,11 +3,8 @@ package com.example.demo.contorller
 import com.example.demo.PATH
 import com.example.demo.mt.MTRunning
 import com.example.demo.mt.Steps
-import org.springframework.http.HttpStatus
-import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 import java.io.File
-import javax.xml.crypto.Data
 
 @CrossOrigin
 @RestController
@@ -41,9 +38,6 @@ class TuringController {
     }
 
     @GetMapping("/nextStepMT")
-    fun nextStep(): Steps? {
-        return MTRunning.nextStep()
-
-    }
+    fun nextStep() = MTRunning.nextStep()
 
 }

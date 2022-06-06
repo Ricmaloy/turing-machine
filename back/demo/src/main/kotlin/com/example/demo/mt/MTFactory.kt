@@ -7,8 +7,8 @@ import kotlin.collections.ArrayList
 
 /**
  * Formato arquivo
- * , (innerSplitter)
- * ; (externalSplitter)
+ * , (splitter interno)
+ * ; (splitter externo)
  * q0;q1;q2;q3 (conjunto de estados)
  * a;b;c;d;e;f;g (alfabeto)
  * a;b;c;d;e;f;g;X;Y;Y (alfabeto fita)
@@ -35,7 +35,7 @@ class MTFactory {
                 val alphabet = generateAlphabet(scanner.next())
                 val tapeAlphabet = generateAlphabet(scanner.next())
                 val q0 = scanner.next()
-                val qAccepted = generateAcceptanceStates(scanner.next())
+                val qAccepted = generateStates(scanner.next())
                 val whiteSymbol = scanner.next().toCharArray()[0]
                 val transition = generateTransition(scanner.next())
                 mt = MaquinaTuring(
@@ -63,8 +63,6 @@ class MTFactory {
         }
         return alphabetSymbols
     }
-
-    private fun generateAcceptanceStates(states: String) = states.split(externalSplitter)
 
     private fun generateTransition(transition: String): Transitions {
         val aux = transition.split(externalSplitter)

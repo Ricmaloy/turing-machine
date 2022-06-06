@@ -15,9 +15,7 @@ object MTRunning {
         mt = null
     }
 
-    fun nextStep(): Steps? {
-        return mt?.nextStep()
-    }
+    fun nextStep() = mt?.nextStep()
 
 
 }
