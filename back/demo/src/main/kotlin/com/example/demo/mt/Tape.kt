@@ -10,7 +10,7 @@ class Tape(
 
     private var size: Int = 0
     var tape: ArrayList<Char> = arrayListOf()
-    var actualPosition = 0
+    var actualPosition = 1
     var wrongWord = false
     init {
         size = word.length + 2
