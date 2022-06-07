@@ -1,4 +1,5 @@
 import { Step } from "../../types/step";
+import confetti from "canvas-confetti";
 
 import {
   Container,
@@ -19,7 +20,8 @@ export function MachineDisplay({
   isAccepted,
   transition,
   onResetMachine,
-}: Step & { onResetMachine: () => void }) {
+  stopInternal,
+}: Step & { onResetMachine: () => void; stopInternal: () => void }) {
   return (
     <Container>
       <Content>
@@ -51,21 +53,28 @@ export function MachineDisplay({
 
         {transition && isAccepted !== null && (
           <>
-            <FeedbackSection>
+            <div>
               {isAccepted ? (
                 <>
-                  <span>🎉</span>
-                  <h1>Oba, a máquina escolhida reconheceu a linguagem</h1>
-                  <span>🎉</span>
+                  <FeedbackSection>
+                    <span>🎉</span>
+                    <h1>Oba, a máquina escolhida reconheceu a linguagem</h1>
+                    <span>🎉</span>
+                  </FeedbackSection>
+                  <InfosSection>
+                    <p>Estado final:</p>
+                    <h1>{actualState}</h1>
+                  </InfosSection>
+                  {stopInternal()}
                 </>
               ) : (
-                <>
+                <FeedbackSection>
                   <span>⛔</span>
                   <h1>Opa, algo deu errado, a linguagem não foi reconhecida</h1>
                   <span>⛔</span>
-                </>
+                </FeedbackSection>
               )}
-            </FeedbackSection>
+            </div>
             <RestartBtn onClick={() => onResetMachine()}>Recomeçar</RestartBtn>
           </>
         )}

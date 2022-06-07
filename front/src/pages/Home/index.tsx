@@ -3,6 +3,7 @@ import { MachinesList } from "../../components/MachinesList";
 import { MachineDisplay } from "../../components/TapeDisplay";
 import { TapeInput } from "../../components/TapeInput";
 import { api } from "../../services/axios/api";
+import confetti from "canvas-confetti";
 import { Step } from "../../types/step";
 
 import { Container, Content, GenerateMachineBtn } from "./styles";
@@ -25,10 +26,6 @@ export function Home() {
     setSelectedMachine(machine);
   }
 
-  function handleGenerateMachineTape() {
-    handleStartMT();
-  }
-
   async function handleStartMT() {
     const { data } = await api.get(
       `startMT?filename=${selectedMachine}&word=${tape}`
@@ -44,7 +41,7 @@ export function Home() {
 
     id = setInterval(() => {
       handleNextStep();
-    }, 3000);
+    }, 1000);
   }
 
   async function handleNextStep() {
@@ -59,6 +56,27 @@ export function Home() {
     }));
   }
 
+  function thrownConfetti() {
+    const options = {
+      particleCount: 120,
+      spread: 70,
+      scalar: 1.2,
+      zIndex: 9999999,
+    };
+
+    confetti({
+      origin: { x: 0, y: -0.1 },
+      angle: -50,
+      ...options,
+    });
+
+    confetti({
+      origin: { x: 1, y: -0.1 },
+      angle: -130,
+      ...options,
+    });
+  }
+
   function handleStopInterval() {
     clearInterval(id);
   }
@@ -67,7 +85,7 @@ export function Home() {
     setSelectedMachine("");
     setTape("");
     setStep({});
-    handleStopInterval();
+    confetti.reset();
   }
 
   useEffect(() => {
@@ -102,8 +120,10 @@ export function Home() {
               isAccepted={step.isAccepted}
               transition={step.transition}
               onResetMachine={handleRestartMachine}
+              stopInternal={handleStopInterval}
             />
           )}
+          {step.isAccepted && (<>{thrownConfetti()}</>)}
         </>
       )}
     </Container>
